@@ -2,15 +2,7 @@ using UnityEngine;
 
 public class EnviromentGenerator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+    // Randomly spawn the tree asset , brush ,and rock using noise 
+    // some point to trigger cutsense  -> waypoints to ruined village where the main chacter will see the cut sence
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
