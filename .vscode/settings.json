@@ -51,6 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "The Curse of the Nagas.sln",
+    "dotnet.defaultSolution": "CurseOfNaga.sln",
     "dotnet.preferCSharpExtension": true
 }

@@ -1,0 +1,31 @@
+--------------------------------------------------------------------------------------------------------
+                                                01 JULY, 2025
+--------------------------------------------------------------------------------------------------------
+- Creating a separate scene for character mechanics testing
+
+- Scene
+    [=] MainMenu_CharacterMechanic
+        {+} Adding 3D colliders to Ground and Player
+
+- Scripts
+    [=] Player.cs
+        {+} 
+    [=] MainGameplayManager
+        {+} Central Singleton script to manage GameStatus
+        {+} Trying SDF to check for objective visibility | It will not work due to perspective
+
+
+
+
+--------------------------------------------------------------------------------------------------------
+- [NOW] Basic combat, exploration, vision-triggered objectives
+- [NOW] Vision-Triggered objectives
+    [=] Need to check if the obect is visible enough on the screen through the camera
+    [=] Basically a bounds check
+        {+} Rigidbody?
+            <~> Too costly, query every FixedUpdate unnecessarily
+        {+} Position Check
+            <~> This will also be called every Update
+            <~> At least not as expensive as Physics Query
+            <~> Who will trigger the event?
+                [:] 

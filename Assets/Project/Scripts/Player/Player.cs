@@ -1,21 +1,24 @@
 using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+namespace CurseOfNaga.Gameplay
 {
-    [SerializeField] private GameInput gameInput;
-    [SerializeField] private float movSpeed = 7f;
-
-
-    void Update()
+    public class Player : MonoBehaviour
     {
-        HandleMovement();
-    }
+        [SerializeField] private GameInput gameInput;
+        [SerializeField] private float movSpeed = 7f;
 
-    private void HandleMovement()
-    {
-        Vector2 inputVector = gameInput.GetMovementVector();
-        Vector3 movDir = new Vector3(inputVector.x, 0f, inputVector.y);
-        transform.position += movDir * movSpeed * Time.deltaTime;
+
+        void Update()
+        {
+            HandleMovement();
+        }
+
+        private void HandleMovement()
+        {
+            Vector2 inputVector = gameInput.GetMovementVector();
+            Vector3 movDir = new Vector3(inputVector.x, 0f, inputVector.y);
+            transform.position += movDir * movSpeed * Time.deltaTime;
+        }
     }
 }
