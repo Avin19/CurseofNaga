@@ -29,9 +29,21 @@
         {+} Changing enum Objective to ObjectiveType and adding values
         {+} Adding PlayerStatus enum
 
+- Scripts
+    [=] EnemyBaseController
+        {+} Basic enemy script for controlling Enemy
+        {+} Enum to check Enemy Status
+    [=] UniversalConstant
+        {+} Adding GameStatus enum
+    [=] MainGameplayManager
+        {+} set/get logic for GameStatus flag
+- Scene
+    [=] Making a basic enemy object
+
 
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
+- [FIX] Find a way to make enemy not slide when IDLE and focusing on Camera
 - [NOW] [DONE]Vision-Triggered objectives
     [=] Need to check if the obect is visible enough on the screen through the camera
     [=] Placing mutiple transforms around the objective to check which objective has been reached.

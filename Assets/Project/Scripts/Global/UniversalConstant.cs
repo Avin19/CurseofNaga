@@ -4,6 +4,8 @@ namespace CurseOfNaga.Global
 {
     public class UniversalConstant
     {
+        public enum GameStatus { DEFAULT, LOADED }
+
         public enum ObjectiveType { ACTIVE, INACTIVE, CURRENT, INVOKE_CUTSCENE }
 
         public enum PlayerStatus

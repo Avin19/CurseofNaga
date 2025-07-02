@@ -1,6 +1,7 @@
 // #define DEBUG_VISIBLE_AREA
 // #define DEBUG_WORLD_POINT
 #define TEST_CUTSCENE
+#define TEST_GAME_1
 
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,9 @@ namespace CurseOfNaga.Gameplay
         [SerializeField] private Camera _mainCamera;
         public Transform PlayerTransform;
 
+        private GameStatus _gameStatus;
+        public GameStatus GameStatus { get => _gameStatus; }
+
         private CancellationTokenSource _cts;
         public Action<PlayerStatus> OnObjectiveVisible;
 
@@ -57,6 +61,10 @@ namespace CurseOfNaga.Gameplay
             ObjectiveWorlPos = new Vector3[_objectives.Length];
 #endif
 
+#if TEST_GAME_1
+            SetGameStatus_Test();
+#endif
+
             _cts = new CancellationTokenSource();
             _inactiveObjectives = new List<ObjectiveInfo>();
         }
@@ -64,6 +72,12 @@ namespace CurseOfNaga.Gameplay
         void Update()
         {
             CheckObjectivesVisibility();
+        }
+
+        public GameStatus SetGameStatus(GameStatus gameStatus)
+        {
+            _gameStatus |= gameStatus;
+            return _gameStatus;
         }
 
         private void CheckObjectivesVisibility()
@@ -132,6 +146,17 @@ namespace CurseOfNaga.Gameplay
             if (_cts.IsCancellationRequested) return;
 
             OnObjectiveVisible?.Invoke(PlayerStatus.IDLE);
+        }
+#endif
+
+#if TEST_GAME_1
+        private async void SetGameStatus_Test()
+        {
+            await Task.Delay(2000);
+            if (_cts.IsCancellationRequested) return;
+
+            _gameStatus &= ~GameStatus.LOADED;
+            _gameStatus |= GameStatus.LOADED;
         }
 #endif
 
