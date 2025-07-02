@@ -56,6 +56,10 @@
     [=] Player
         {+} Facing left/right logic
 
+- Scritps
+    [=] Player
+        {+} Fixing facing left/right
+
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
 - Orientation does not seem to matter that much to when using weapon

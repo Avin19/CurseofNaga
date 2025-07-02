@@ -64,35 +64,37 @@ namespace CurseOfNaga.Gameplay
                     _playerStatus &= ~PlayerStatus.IDLE;
                     _playerStatus |= PlayerStatus.MOVING;
 
-                    // if (inputVector.x < 0f)
-                    if (inputVector.x < 0f
-                    && ((_playerStatus & PlayerStatus.MOVING) != 0
-                    || (_playerStatus & PlayerStatus.FACING_RIGHT) != 0))
+                    if (inputVector.x < 0f)
+                    // && ((_playerStatus & PlayerStatus.FACING_RIGHT) != 0)
                     {
-                        _playerStatus &= ~PlayerStatus.FACING_RIGHT;
-                        _playerStatus |= PlayerStatus.FACING_LEFT;
+                        if ((_playerStatus & PlayerStatus.FACING_LEFT) == 0)
+                        {
+                            _playerStatus &= ~PlayerStatus.FACING_RIGHT;
+                            _playerStatus |= PlayerStatus.FACING_LEFT;
 
-                        moveDir = _weaponPlacement.localPosition;
-                        moveDir.x = _LEFTFACINGWEAPONPLACEMENT;
-                        _weaponPlacement.localPosition = moveDir;
+                            moveDir = _weaponPlacement.localPosition;
+                            moveDir.x = _LEFTFACINGWEAPONPLACEMENT;
+                            _weaponPlacement.localPosition = moveDir;
 
-                        _playerMain.localEulerAngles = _LEFTFACING;
-                        // Debug.Log($"Facing Left | inputVector: {inputVector}");
+                            _playerMain.localEulerAngles = _LEFTFACING;
+                            // Debug.Log($"Facing Left | inputVector: {inputVector}");
+                        }
                     }
-                    // else if (inputVector.x > 0f)
-                    else if (inputVector.x > 0f
-                    && ((_playerStatus & PlayerStatus.MOVING) != 0
-                    || (_playerStatus & PlayerStatus.FACING_LEFT) != 0))
+                    else if (inputVector.x > 0f)
+                    // && ((_playerStatus & PlayerStatus.FACING_LEFT) != 0)
                     {
-                        _playerStatus &= ~PlayerStatus.FACING_LEFT;
-                        _playerStatus |= PlayerStatus.FACING_RIGHT;
+                        if ((_playerStatus & PlayerStatus.FACING_RIGHT) == 0)
+                        {
+                            _playerStatus &= ~PlayerStatus.FACING_LEFT;
+                            _playerStatus |= PlayerStatus.FACING_RIGHT;
 
-                        moveDir = _weaponPlacement.localPosition;
-                        moveDir.x = _RIGHTFACINGWEAPONPLACEMENT;
-                        _weaponPlacement.localPosition = moveDir;
+                            moveDir = _weaponPlacement.localPosition;
+                            moveDir.x = _RIGHTFACINGWEAPONPLACEMENT;
+                            _weaponPlacement.localPosition = moveDir;
 
-                        _playerMain.localEulerAngles = _RIGHTFACING;
-                        // Debug.Log($"Facing Right | inputVector: {inputVector}");
+                            _playerMain.localEulerAngles = _RIGHTFACING;
+                            // Debug.Log($"Facing Right | inputVector: {inputVector}");
+                        }
                     }
                 }
             }
