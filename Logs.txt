@@ -14,13 +14,27 @@
         {+} Central Singleton script to manage GameStatus
         {+} Trying SDF to check for objective visibility | It will not work due to perspective
 
-
+--------------------------------------------------------------------------------------------------------
+                                                02 JULY, 2025
+--------------------------------------------------------------------------------------------------------
+- Scripts
+    [=] MainGameplayManager
+        {+} Using camera to check object visibility.
+        {+} Internal class for storing objective infos
+        {+} Separate array for inactive and active objectives
+        {+} Returning PlayerStatus via action for visible objects.
+    [=] Player
+        {+} ObjectiveVisible callback
+    [=] UniversalConstant
+        {+} Changing enum Objective to ObjectiveType and adding values
+        {+} Adding PlayerStatus enum
 
 
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
-- [NOW] Vision-Triggered objectives
+- [NOW] [DONE]Vision-Triggered objectives
     [=] Need to check if the obect is visible enough on the screen through the camera
+    [=] Placing mutiple transforms around the objective to check which objective has been reached.
     [=] Basically a bounds check
         {+} Rigidbody?
             <~> Too costly, query every FixedUpdate unnecessarily
@@ -28,4 +42,4 @@
             <~> This will also be called every Update
             <~> At least not as expensive as Physics Query
             <~> Who will trigger the event?
-                [:] 
+        {+} Using Camera
