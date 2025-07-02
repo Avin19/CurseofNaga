@@ -45,6 +45,9 @@
         {+} https://www.youtube.com/watch?v=2L7T2ujrXRQ&list=PPSV
         {+} https://www.youtube.com/watch?v=wYulZiBKg-I&list=PPSV
 
+- Scene
+    [=] Making Weapon prefab
+
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
 - [FIX] Find a way to make enemy not slide when IDLE and focusing on Camera
