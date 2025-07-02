@@ -12,10 +12,12 @@ namespace CurseOfNaga.Global
         {
             IDLE = 0,
             MOVING = 1 << 0,
-            INVOKED_CUTSCENE = 1 << 1,
-            IN_CUTSCENE = 1 << 2,
-            PERFORMING_ACTION = 1 << 3,                 // Player cant move while performing this
-            PERFORMING_ADDITIVE_ACTION = 1 << 4         // Player can move while performing this
+            FACING_LEFT = 1 << 1,
+            FACING_RIGHT = 1 << 2,
+            INVOKED_CUTSCENE = 1 << 3,
+            IN_CUTSCENE = 1 << 4,
+            PERFORMING_ACTION = 1 << 5,                 // Player cant move while performing this
+            PERFORMING_ADDITIVE_ACTION = 1 << 6         // Player can move while performing this
         }
     }
 }

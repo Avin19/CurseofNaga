@@ -18,9 +18,9 @@ namespace CurseOfNaga.Gameplay.Enemies
         }
 
         private EnemyStatus _enemyStatus;
-        public float _speedMult = 2f;
-        public int _VISIBILITYTHRESHOLD = 10;
-        public float _PROXIMITYTHRESHOLD = 10;
+        public float _speedMult = 2f;                 //Set to protected
+        public int _VISIBILITYTHRESHOLD = 10;              //Set to const?
+        public float _PROXIMITYTHRESHOLD = 10;              //Set to const?
 
         void Start()
         {

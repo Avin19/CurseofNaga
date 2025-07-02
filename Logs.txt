@@ -48,8 +48,24 @@
 - Scene
     [=] Making Weapon prefab
 
+- Scene
+    [=] Adding Weapon-Collider as trigger to detect collision
+- Scripts
+    [=] UniversalConstant
+        {+} Adding FACING_LEFT, FACING_RIGHT to PlayerStatus
+    [=] Player
+        {+} Facing left/right logic
+
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
+- Orientation does not seem to matter that much to when using weapon
+    [=] https://www.youtube.com/watch?v=nRsneTFqdz0&list=PPSV&t=26s
+    [=] 0:41 
+        {+} Player can strike upward without rotating the sprite towards the target
+        {+} The sprite is facing sideways and animation is happening while 
+            the hit-box might be facing upwards and hitting the target
+        {+} When hitting up or down, the sprite is rotated sideways.
+            <~> Left or right might depend on something maybe
 - [FIX] Find a way to make enemy not slide when IDLE and focusing on Camera
 - [NOW] [DONE]Vision-Triggered objectives
     [=] Need to check if the obect is visible enough on the screen through the camera
