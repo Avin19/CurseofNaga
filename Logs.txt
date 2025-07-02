@@ -40,6 +40,10 @@
 - Scene
     [=] Making a basic enemy object
 
+- Scene
+    [=] Making colliders orthogonal to ground
+        {+} https://www.youtube.com/watch?v=2L7T2ujrXRQ&list=PPSV
+        {+} https://www.youtube.com/watch?v=wYulZiBKg-I&list=PPSV
 
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
