@@ -3473,6 +3473,7 @@ MonoBehaviour:
   gameInput: {fileID: 1271393285}
   movSpeed: 7
   _weaponPlacement: {fileID: 2010656209}
+  _playerMain: {fileID: 1293799479}
 --- !u!54 &2058776342
 Rigidbody:
   m_ObjectHideFlags: 0

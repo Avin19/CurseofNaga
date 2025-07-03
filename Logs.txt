@@ -61,6 +61,18 @@
         {+} Fixing facing left/right
 
 --------------------------------------------------------------------------------------------------------
+                                                03 JULY, 2025
+--------------------------------------------------------------------------------------------------------
+- Project
+    [=] PlayerController
+        {+} Adding Jump | Roll | Attack | Interact
+- Scripts
+    [=] UniversalConstant
+        {+} Adding InputStatus enum
+        {+} Adding values to PlayerStatus enum
+
+
+--------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
 - Orientation does not seem to matter that much to when using weapon
     [=] https://www.youtube.com/watch?v=nRsneTFqdz0&list=PPSV&t=26s

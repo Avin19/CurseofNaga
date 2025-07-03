@@ -38,9 +38,10 @@ namespace CurseOfNaga.Gameplay
 
         private void Update()
         {
+            HandleInput();
+
             if ((_playerStatus & PlayerStatus.PERFORMING_ACTION) == 0)
             {
-
                 HandleMovement();
             }
         }
@@ -50,11 +51,19 @@ namespace CurseOfNaga.Gameplay
             Debug.Log($"Detected Collider: {other.name}");
         }
 
-        Vector2 inputVector; //For debugging
+        private void HandleInput()
+        {
+            if ((gameInput.CurrentInputStatus & InputStatus.ATTACK) != 0)
+            {
+                _playerStatus |= PlayerStatus.ATTACKING;
+            }
+        }
+
+        // Vector2 inputVector; //For debugging
         private void HandleMovement()
         {
-            // Vector2 inputVector = gameInput.GetMovementVector();
-            inputVector = gameInput.GetMovementVector();
+            Vector2 inputVector = gameInput.GetMovementVector();
+            // inputVector = gameInput.GetMovementVector();
             Vector3 moveDir;
 
             if (Mathf.Max(Mathf.Abs(inputVector.x), Mathf.Abs(inputVector.y)) > 0f)
