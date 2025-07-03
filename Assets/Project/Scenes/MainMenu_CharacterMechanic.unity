@@ -2274,7 +2274,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293799478}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2282,7 +2282,7 @@ Transform:
   - {fileID: 815071098}
   - {fileID: 2010656209}
   m_Father: {fileID: 2058776340}
-  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1293799481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3057,7 +3057,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1799646332}
   - component: {fileID: 1799646333}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WeaponCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3433,6 +3433,7 @@ GameObject:
   - component: {fileID: 2058776340}
   - component: {fileID: 2058776341}
   - component: {fileID: 2058776342}
+  - component: {fileID: 2058776343}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3471,9 +3472,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameInput: {fileID: 1271393285}
-  movSpeed: 7
+  _movSpeed: 7
+  _rollSpeed: 20
   _weaponPlacement: {fileID: 2010656209}
   _playerMain: {fileID: 1293799479}
+  _playerCollider: {fileID: 1854359411}
 --- !u!54 &2058776342
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3501,6 +3504,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 26
   m_CollisionDetection: 0
+--- !u!95 &2058776343
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058776338}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f612eac4dac81ee4a8b8da29872c11f5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &2096478898
 PrefabInstance:
   m_ObjectHideFlags: 0

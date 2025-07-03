@@ -81,8 +81,25 @@
         {+} OnInputDone callback
             <~> Setting PlayerStatus flags
 
+- Scene
+    [=] Adding a player template animations | Idle | Roll
+- Scripts
+    [=] Player
+        {+} Animator reference
+        {+} Animation logic | Template animations
+        {+} Setting / Unsetting action
+        {+} Attack collision logic
+    [=] UniversalConstant
+        {+} Adding ENEMY_FOUND to PlayerStatus
+    [=] EnemyBaseController
+        {+} Damage logic
+
+
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
+- [DO] Check how many actions can be stacked.
+    [=] Maybe only 2 actions can be stacked on top.
+    [=] Eg: Attack + Move, Use Item + Move
 - Orientation does not seem to matter that much to when using weapon
     [=] https://www.youtube.com/watch?v=nRsneTFqdz0&list=PPSV&t=26s
     [=] 0:41 

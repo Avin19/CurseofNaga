@@ -22,7 +22,8 @@ namespace CurseOfNaga.Global
             ROLLING = 1 << 8,
             ATTACKING = 1 << 9,
             INTERACTING = 1 << 10,
-            USING_ITEM = 1 << 10,
+            USING_ITEM = 1 << 11,
+            ENEMY_FOUND = 1 << 12,
         }
 
     }

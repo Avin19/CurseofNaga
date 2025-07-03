@@ -16,6 +16,8 @@ namespace CurseOfNaga.Gameplay.Enemies
             ATTACKING_PLAYER = 1 << 5,
             DEAD = 1 << 6
         }
+        protected float _OgHealth = 100f;
+        protected float _Health;
 
         private EnemyStatus _enemyStatus;
         public float _speedMult = 2f;                 //Set to protected
@@ -25,6 +27,7 @@ namespace CurseOfNaga.Gameplay.Enemies
         void Start()
         {
             _enemyStatus = EnemyStatus.IDLE;
+            _Health = _OgHealth;
         }
 
         private void Update()
@@ -61,6 +64,14 @@ namespace CurseOfNaga.Gameplay.Enemies
             }
 
             transform.position -= playerDir.normalized * _speedMult * Time.deltaTime;
+        }
+
+        public void GetDamage(float damage)
+        {
+            _Health -= damage;
+
+            if (_Health <= 0)
+                gameObject.SetActive(false);
         }
     }
 }
