@@ -7,11 +7,22 @@ using InputAction = UnityEngine.InputSystem.InputAction;
 
 namespace CurseOfNaga.Gameplay
 {
+
     public class GameInput : MonoBehaviour
     {
+        internal enum InputStatus
+        {
+            DEFAULT = 0,
+            MOVE = 1 << 1,
+            JUMP = 1 << 2,
+            ROLL = 1 << 3,
+            INTERACT = 1 << 4,
+            ATTACK = 1 << 5
+        }
+
         private PlayerController playerInput;
 
-        public InputStatus CurrentInputStatus;
+        public System.Action<PlayerStatus, float> OnInputDone;
 
         void Awake()
         {
@@ -19,7 +30,7 @@ namespace CurseOfNaga.Gameplay
             playerInput.Player.Enable();
 
             playerInput.Player.Jump.performed += (ctx) => SetAction(ctx, InputStatus.JUMP);
-            playerInput.Player.Jump.started += (ctx) => SetAction(ctx, InputStatus.JUMP);
+            // playerInput.Player.Jump.started += (ctx) => SetAction(ctx, InputStatus.JUMP);
             playerInput.Player.Jump.canceled += (ctx) => SetAction(ctx, InputStatus.JUMP);
 
             playerInput.Player.Roll.performed += (ctx) => SetAction(ctx, InputStatus.ROLL);
@@ -39,10 +50,7 @@ namespace CurseOfNaga.Gameplay
                 case InputStatus.JUMP:
                     {
                         float contextValue = context.ReadValue<float>();
-                        if (contextValue > 0)
-                            CurrentInputStatus |= InputStatus.JUMP;
-                        else
-                            CurrentInputStatus &= ~InputStatus.JUMP;
+                        OnInputDone?.Invoke(PlayerStatus.JUMPING, contextValue);
                         // Debug.Log($"Jump: {context.ReadValue<float>()}");
                     }
 
@@ -51,10 +59,7 @@ namespace CurseOfNaga.Gameplay
                 case InputStatus.ROLL:
                     {
                         float contextValue = context.ReadValue<float>();
-                        if (contextValue > 0)
-                            CurrentInputStatus |= InputStatus.ROLL;
-                        else
-                            CurrentInputStatus &= ~InputStatus.ROLL;
+                        OnInputDone?.Invoke(PlayerStatus.ROLLING, contextValue);
                         // Debug.Log($"Roll: {context.ReadValue<float>()}");
                     }
 
@@ -63,10 +68,7 @@ namespace CurseOfNaga.Gameplay
                 case InputStatus.INTERACT:
                     {
                         float contextValue = context.ReadValue<float>();
-                        if (contextValue > 0)
-                            CurrentInputStatus |= InputStatus.INTERACT;
-                        else
-                            CurrentInputStatus &= ~InputStatus.INTERACT;
+                        OnInputDone?.Invoke(PlayerStatus.INTERACTING, contextValue);
                         // Debug.Log($"Interact: {context.ReadValue<float>()}");
                     }
 
@@ -75,10 +77,7 @@ namespace CurseOfNaga.Gameplay
                 case InputStatus.ATTACK:
                     {
                         float contextValue = context.ReadValue<float>();
-                        if (contextValue > 0)
-                            CurrentInputStatus |= InputStatus.ATTACK;
-                        else
-                            CurrentInputStatus &= ~InputStatus.ATTACK;
+                        OnInputDone?.Invoke(PlayerStatus.ATTACKING, contextValue);
                         // Debug.Log($"Attack: {context.ReadValue<float>()}");
                     }
 

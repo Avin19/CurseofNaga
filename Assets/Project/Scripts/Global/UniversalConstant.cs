@@ -22,16 +22,8 @@ namespace CurseOfNaga.Global
             ROLLING = 1 << 8,
             ATTACKING = 1 << 9,
             INTERACTING = 1 << 10,
+            USING_ITEM = 1 << 10,
         }
 
-        public enum InputStatus
-        {
-            DEFAULT = 0,
-            MOVE = 1 << 1,
-            JUMP = 1 << 2,
-            ROLL = 1 << 3,
-            INTERACT = 1 << 4,
-            ATTACK = 1 << 5
-        }
     }
 }

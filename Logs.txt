@@ -71,6 +71,15 @@
         {+} Adding InputStatus enum
         {+} Adding values to PlayerStatus enum
 
+- Scripts
+    [=] UniversalConstant
+        {+} Removing InputStatus | Having separate enums will make it redundant
+    [=] GameInput
+        {+} Other input logic
+        {+} Action for Input values
+    [=] Player
+        {+} OnInputDone callback
+            <~> Setting PlayerStatus flags
 
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives

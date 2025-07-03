@@ -25,6 +25,7 @@ namespace CurseOfNaga.Gameplay
         private void OnDisable()
         {
             MainGameplayManager.Instance.OnObjectiveVisible -= UpdatePlayerStatus;
+            gameInput.OnInputDone -= HandleInput;
         }
 
         private void Start()
@@ -34,12 +35,11 @@ namespace CurseOfNaga.Gameplay
 #endif
 
             MainGameplayManager.Instance.OnObjectiveVisible += UpdatePlayerStatus;
+            gameInput.OnInputDone += HandleInput;
         }
 
         private void Update()
         {
-            HandleInput();
-
             if ((_playerStatus & PlayerStatus.PERFORMING_ACTION) == 0)
             {
                 HandleMovement();
@@ -51,11 +51,66 @@ namespace CurseOfNaga.Gameplay
             Debug.Log($"Detected Collider: {other.name}");
         }
 
-        private void HandleInput()
+        private void HandleInput(PlayerStatus status, float value)
         {
-            if ((gameInput.CurrentInputStatus & InputStatus.ATTACK) != 0)
+            // if ((gameInput._currentInputStatus & InputStatus.ATTACK) != 0)
+            switch (status)
             {
-                _playerStatus |= PlayerStatus.ATTACKING;
+                case PlayerStatus.JUMPING:
+                    if (value > 0)
+                    {
+                        _playerStatus |= PlayerStatus.JUMPING;
+                        _playerStatus |= PlayerStatus.PERFORMING_ACTION;
+                    }
+                    else
+                    {
+                        _playerStatus &= ~PlayerStatus.JUMPING;
+                        _playerStatus &= ~PlayerStatus.PERFORMING_ACTION;
+                    }
+
+                    break;
+
+                case PlayerStatus.ROLLING:
+                    if (value > 0)
+                    {
+                        _playerStatus |= PlayerStatus.ROLLING;
+                        _playerStatus |= PlayerStatus.PERFORMING_ACTION;
+                    }
+                    else
+                    {
+                        _playerStatus &= ~PlayerStatus.ROLLING;
+                        _playerStatus &= ~PlayerStatus.PERFORMING_ACTION;
+                    }
+
+                    break;
+
+                case PlayerStatus.ATTACKING:
+                    if (value > 0)
+                    {
+                        _playerStatus |= PlayerStatus.ATTACKING;
+                        _playerStatus |= PlayerStatus.PERFORMING_ACTION;
+                    }
+                    else
+                    {
+                        _playerStatus &= ~PlayerStatus.ATTACKING;
+                        _playerStatus &= ~PlayerStatus.PERFORMING_ACTION;
+                    }
+
+                    break;
+
+                case PlayerStatus.INTERACTING:
+                    if (value > 0)
+                    {
+                        _playerStatus |= PlayerStatus.INTERACTING;
+                        _playerStatus |= PlayerStatus.PERFORMING_ACTION;
+                    }
+                    else
+                    {
+                        _playerStatus &= ~PlayerStatus.INTERACTING;
+                        _playerStatus &= ~PlayerStatus.PERFORMING_ACTION;
+                    }
+
+                    break;
             }
         }
 
