@@ -6,16 +6,6 @@ namespace CurseOfNaga.Gameplay.Enemies
 {
     public class EnemyBaseController : MonoBehaviour
     {
-        internal enum EnemyStatus
-        {
-            IDLE = 0,
-            MOVING = 1 << 1,
-            PLAYER_VISIBLE = 1 << 2,
-            CHASING_PLAYER = 1 << 3,
-            REACHED_PLAYER = 1 << 4,
-            ATTACKING_PLAYER = 1 << 5,
-            DEAD = 1 << 6
-        }
         protected float _OgHealth = 100f;
         protected float _Health;
 
@@ -26,7 +16,7 @@ namespace CurseOfNaga.Gameplay.Enemies
 
         private void OnDestroy()
         {
-            MainGameplayManager.Instance.OnEnemyHit -= HandleEnemyHit;
+            MainGameplayManager.Instance.OnEnemyStatusUpdate -= HandleStatusChange;
         }
 
         void Start()
@@ -34,7 +24,7 @@ namespace CurseOfNaga.Gameplay.Enemies
             _enemyStatus = EnemyStatus.IDLE;
             _Health = _OgHealth;
 
-            MainGameplayManager.Instance.OnEnemyHit += HandleEnemyHit;
+            MainGameplayManager.Instance.OnEnemyStatusUpdate += HandleStatusChange;
         }
 
         private void Update()
@@ -73,10 +63,15 @@ namespace CurseOfNaga.Gameplay.Enemies
             transform.position -= playerDir.normalized * _speedMult * Time.deltaTime;
         }
 
-        private void HandleEnemyHit(int transformID, float damage)
+        private void HandleStatusChange(EnemyStatus status, int transformID, float damage)
         {
-            if (transformID == transform.GetInstanceID())
-                GetDamage(damage);
+            switch (status)
+            {
+                case EnemyStatus.BEING_ATTACKED:
+                    if (transformID == transform.GetInstanceID())
+                        GetDamage(damage);
+                    break;
+            }
         }
 
         public void GetDamage(float damage)
@@ -84,7 +79,10 @@ namespace CurseOfNaga.Gameplay.Enemies
             _Health -= damage;
 
             if (_Health <= 0)
+            {
+                MainGameplayManager.Instance.OnEnemyStatusUpdate?.Invoke(EnemyStatus.DEAD, transform.GetInstanceID(), -1);
                 gameObject.SetActive(false);
+            }
         }
     }
 }

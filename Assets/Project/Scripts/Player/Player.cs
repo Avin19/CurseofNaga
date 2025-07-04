@@ -15,6 +15,7 @@ namespace CurseOfNaga.Gameplay
     {
         internal enum HitStatus { DID_NOT_HIT, HIT }
 
+        [Serializable]
         internal struct HitInfo
         {
             public int ID;
@@ -54,6 +55,7 @@ namespace CurseOfNaga.Gameplay
         {
             MainGameplayManager.Instance.OnObjectiveVisible -= UpdatePlayerStatus;
             gameInput.OnInputDone -= HandleInput;
+            MainGameplayManager.Instance.OnEnemyStatusUpdate -= UpdateEnemyInfo;
         }
 
         private void Start()
@@ -67,6 +69,7 @@ namespace CurseOfNaga.Gameplay
 
             MainGameplayManager.Instance.OnObjectiveVisible += UpdatePlayerStatus;
             gameInput.OnInputDone += HandleInput;
+            MainGameplayManager.Instance.OnEnemyStatusUpdate += UpdateEnemyInfo;
         }
 
         private void Update()
@@ -129,6 +132,42 @@ namespace CurseOfNaga.Gameplay
                     if (_hitInfos[i].ID == colliderID)
                         _hitInfos.RemoveAt(i);
                 }
+            }
+        }
+
+        private void PlayAnimation(PlayerStatus playerStatus)
+        {
+            switch (playerStatus)
+            {
+                case PlayerStatus.IDLE:
+                    _playerAC.SetInteger(_PLAYER_STATUS, 0);
+                    _playerAC.Play(_IDLE);
+
+                    break;
+
+                case PlayerStatus.JUMPING:
+                    _playerAC.SetInteger(_PLAYER_STATUS, (int)playerStatus);
+                    _playerAC.Play(_JUMP);
+
+                    break;
+
+                case PlayerStatus.ROLLING:
+                    _playerAC.SetInteger(_PLAYER_STATUS, (int)playerStatus);
+                    _playerAC.Play(_ROLL);
+
+                    break;
+
+                case PlayerStatus.ATTACKING:
+                    _playerAC.SetInteger(_PLAYER_STATUS, (int)playerStatus);
+                    _playerAC.Play(_ATTACK);
+
+                    break;
+
+                case PlayerStatus.INTERACTING:
+                    _playerAC.SetInteger(_PLAYER_STATUS, (int)playerStatus);
+                    _playerAC.Play(_INTERACT);
+
+                    break;
             }
         }
 
@@ -199,7 +238,6 @@ namespace CurseOfNaga.Gameplay
                     }
 
                     // Check for Enemy-Hit
-
                     HitInfo info;
                     for (int i = 0; i < _hitInfos.Count; i++)
                     {
@@ -209,11 +247,9 @@ namespace CurseOfNaga.Gameplay
                             info.Status = HitStatus.HIT;
                             _hitInfos[i] = info;
 
-                            MainGameplayManager.Instance.OnEnemyHit?.Invoke(_hitInfos[i].ID, 10f);
+                            MainGameplayManager.Instance.OnEnemyStatusUpdate?.Invoke(EnemyStatus.BEING_ATTACKED, _hitInfos[i].ID, 10f);
                         }
                     }
-
-
                     // else
                     // {
                     //     _playerStatus &= ~PlayerStatus.ATTACKING;
@@ -240,38 +276,18 @@ namespace CurseOfNaga.Gameplay
             }
         }
 
-        private void PlayAnimation(PlayerStatus playerStatus)
+        private void UpdateEnemyInfo(EnemyStatus status, int transformID, float value)
         {
-            switch (playerStatus)
+            switch (status)
             {
-                case PlayerStatus.IDLE:
-                    _playerAC.SetInteger(_PLAYER_STATUS, 0);
-                    _playerAC.Play(_IDLE);
-
-                    break;
-
-                case PlayerStatus.JUMPING:
-                    _playerAC.SetInteger(_PLAYER_STATUS, (int)playerStatus);
-                    _playerAC.Play(_JUMP);
-
-                    break;
-
-                case PlayerStatus.ROLLING:
-                    _playerAC.SetInteger(_PLAYER_STATUS, (int)playerStatus);
-                    _playerAC.Play(_ROLL);
-
-                    break;
-
-                case PlayerStatus.ATTACKING:
-                    _playerAC.SetInteger(_PLAYER_STATUS, (int)playerStatus);
-                    _playerAC.Play(_ATTACK);
-
-                    break;
-
-                case PlayerStatus.INTERACTING:
-                    _playerAC.SetInteger(_PLAYER_STATUS, (int)playerStatus);
-                    _playerAC.Play(_INTERACT);
-
+                case EnemyStatus.DEAD:
+                    {
+                        for (int i = 0; i < _hitInfos.Count; i++)
+                        {
+                            if (_hitInfos[i].ID == transformID)
+                                _hitInfos.RemoveAt(i);
+                        }
+                    }
                     break;
             }
         }
@@ -339,6 +355,16 @@ namespace CurseOfNaga.Gameplay
                     await Task.Delay(500);
                     _playerStatus &= ~PlayerStatus.ROLLING;
                     _playerStatus &= ~PlayerStatus.PERFORMING_ADDITIVE_ACTION;
+
+                    //Unset every ID
+                    HitInfo info;
+                    for (int i = 0; i < _hitInfos.Count; i++)
+                    {
+                        // Debug.Log($"Unsetting Hit IDs | i : {i}");
+                        info = _hitInfos[i];
+                        info.Status = HitStatus.DID_NOT_HIT;
+                        _hitInfos[i] = info;
+                    }
 
                     goto case PlayerStatus.IDLE;
             }

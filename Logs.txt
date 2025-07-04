@@ -107,6 +107,17 @@
     [=] EnemyBaseController
         {+} OnEnemyHit callback logic
 
+- Scripts
+    [=] UniversalConstant
+        {+} Moving EnemeyStatus here and adding values
+    [=] MainGameplayManager
+        {+} Adding EnemyStatus to action OnEnemyStatusUpdate
+    [=] EnemyBaseController
+        {+} Changing callbacks to OnEnemyStatusUpdate
+            <~> Invoking action for death
+    [=] Player
+        {+} Callback logic for OnEnemyStatusUpdate
+            <~> Removing transform ID for dead enemy
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
 - [DO] Check how many actions can be stacked.

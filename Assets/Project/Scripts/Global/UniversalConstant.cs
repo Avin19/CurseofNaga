@@ -26,5 +26,16 @@ namespace CurseOfNaga.Global
             ENEMY_FOUND = 1 << 12,
         }
 
+        public enum EnemyStatus
+        {
+            IDLE = 0,
+            MOVING = 1 << 1,
+            PLAYER_VISIBLE = 1 << 2,
+            CHASING_PLAYER = 1 << 3,
+            REACHED_PLAYER = 1 << 4,
+            ATTACKING_PLAYER = 1 << 5,
+            BEING_ATTACKED = 1 << 6,
+            DEAD = 1 << 7,
+        }
     }
 }

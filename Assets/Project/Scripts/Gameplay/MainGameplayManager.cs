@@ -49,7 +49,7 @@ namespace CurseOfNaga.Gameplay
 
         private CancellationTokenSource _cts;
         public Action<PlayerStatus> OnObjectiveVisible;
-        public Action<int, float> OnEnemyHit;
+        public Action<EnemyStatus, int, float> OnEnemyStatusUpdate;
 
         private void OnDestroy()
         {
