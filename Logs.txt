@@ -126,8 +126,20 @@
         {+} Sending simple hit action invoke along with transform ID
     [=] UniversalConstant
         {+} Adding value to EnemyStatus
+
+- Scripts
+    [=] Player
+        {+} Fixing UnsetAction
+    [=] Enemy
+        {+} Adding Enemy Animator
+            <~> Making template animations
+        {+} Fixing Player detection logic
+        {+} Enemy animation logic
+
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
+- [DO] Will need to tweak enemies that have ranged weapons
+- [DO] Will there be i-frame for the whole roll
 - [DO] Check how many actions can be stacked.
     [=] Maybe only 2 actions can be stacked on top.
     [=] Eg: Attack + Move, Use Item + Move

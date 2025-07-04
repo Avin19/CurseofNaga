@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 using static CurseOfNaga.Global.UniversalConstant;
@@ -14,6 +15,13 @@ namespace CurseOfNaga.Gameplay.Enemies
         public int _VISIBILITYTHRESHOLD = 10;              //Set to const?
         public float _PROXIMITYTHRESHOLD = 10;              //Set to const?
 
+        #region Animation
+        private Animator _enemyAC;
+        private const string _ENEMY_STATUS = "EnemyStatus";
+        private const string _IDLE = "Enemy_Idle", _MOVE = "Enemy_Move", _DODGE = "Enemy_Dodge",
+            _ATTACK = "Enemy_Attack";
+        #endregion Animation
+
         private void OnDisable()
         {
             MainGameplayManager.Instance.OnEnemyStatusUpdate -= HandleStatusChange;
@@ -26,6 +34,7 @@ namespace CurseOfNaga.Gameplay.Enemies
 
         void Start()
         {
+            _enemyAC = transform.GetComponent<Animator>();
             _enemyStatus = EnemyStatus.IDLE;
             _Health = _OgHealth;
         }
@@ -37,20 +46,32 @@ namespace CurseOfNaga.Gameplay.Enemies
 
             Vector3 tempVec = transform.position - MainGameplayManager.Instance.PlayerTransform.position;
 
-            if ((_enemyStatus & EnemyStatus.PLAYER_VISIBLE) == 0
-                && (tempVec.sqrMagnitude <= _VISIBILITYTHRESHOLD * _VISIBILITYTHRESHOLD))
+            if (tempVec.sqrMagnitude <= _VISIBILITYTHRESHOLD * _VISIBILITYTHRESHOLD)
+            // && (_enemyStatus & EnemyStatus.PLAYER_VISIBLE) == 0)
             {
                 _enemyStatus &= ~EnemyStatus.IDLE;
                 _enemyStatus |= EnemyStatus.PLAYER_VISIBLE;
-            }
-            else
-            {
                 _enemyStatus |= EnemyStatus.CHASING_PLAYER;
-                MoveTowardsPlayer();
+                ChasePlayer();
             }
+            else if ((_enemyStatus & EnemyStatus.PLAYER_VISIBLE) != 0)
+            {
+                _enemyStatus &= ~EnemyStatus.PLAYER_VISIBLE;
+                _enemyStatus &= ~EnemyStatus.CHASING_PLAYER;
+            }
+            // else if ((_enemyStatus & EnemyStatus.REACHED_PLAYER) != 0)
+            // {
+
+            // }
+
+            // if ((_enemyStatus & EnemyStatus.PLAYER_VISIBLE) != 0)
+            // {
+            //     _enemyStatus |= EnemyStatus.CHASING_PLAYER;
+            //     MoveTowardsPlayer();
+            // }
         }
 
-        private void MoveTowardsPlayer()
+        private void ChasePlayer()
         {
             // if ((_enemyStatus & EnemyStatus.PLAYER_VISIBLE) == 0) return;
 
@@ -60,10 +81,31 @@ namespace CurseOfNaga.Gameplay.Enemies
             if (playerDir.sqrMagnitude <= _PROXIMITYTHRESHOLD * _PROXIMITYTHRESHOLD)
             {
                 _enemyStatus |= EnemyStatus.REACHED_PLAYER;
+                // MakeDecision();
                 return;
             }
 
             transform.position -= playerDir.normalized * _speedMult * Time.deltaTime;
+        }
+
+        // Decision on what to do
+        private async void MakeDecision()
+        {
+            //Consider possibilities of what enemy can do and then execute accordingly
+
+
+            int randomDecisionTime = Random.Range(500, 5000);       //0.5s - 5s
+
+            await Task.Delay(randomDecisionTime);
+            // MakeDecision();
+        }
+
+        private void RoamAroundTheArea() { }
+
+        //Async as attacks would need to be chained
+        private async void AttackPlayer()
+        {
+
         }
 
         private void HandleStatusChange(EnemyStatus status, int transformID, float value)
@@ -82,6 +124,53 @@ namespace CurseOfNaga.Gameplay.Enemies
                     if ((_enemyStatus & EnemyStatus.ENEMY_WITHIN_PLAYER_RANGE) != 0)
                         GetDamage(value);
                     break;
+            }
+        }
+
+        private void PlayAnimation(EnemyStatus enemyStatus)
+        {
+            switch (enemyStatus)
+            {
+                case EnemyStatus.IDLE:
+                    _enemyAC.SetInteger(_ENEMY_STATUS, 0);
+                    _enemyAC.Play(_IDLE);
+
+                    break;
+
+                case EnemyStatus.MOVING:
+                    _enemyAC.SetInteger(_ENEMY_STATUS, (int)enemyStatus);
+                    _enemyAC.Play(_MOVE);
+
+                    break;
+
+                case EnemyStatus.DODGING:
+                    _enemyAC.SetInteger(_ENEMY_STATUS, (int)enemyStatus);
+                    _enemyAC.Play(_DODGE);
+
+                    break;
+
+                case EnemyStatus.ATTACKING:
+                    _enemyAC.SetInteger(_ENEMY_STATUS, (int)enemyStatus);
+                    _enemyAC.Play(_ATTACK);
+
+                    break;
+            }
+        }
+
+        private async void UnsetAction_Async(EnemyStatus status)
+        {
+            switch (status)
+            {
+                case EnemyStatus.IDLE:
+                    PlayAnimation(EnemyStatus.IDLE);
+
+                    break;
+
+                case EnemyStatus.ATTACKING:
+                    await Task.Delay(500);
+                    _enemyStatus &= ~EnemyStatus.ATTACKING;
+
+                    goto case EnemyStatus.IDLE;
             }
         }
 

@@ -462,6 +462,7 @@ GameObject:
   - component: {fileID: 272541824}
   - component: {fileID: 272541825}
   - component: {fileID: 272541823}
+  - component: {fileID: 272541826}
   m_Layer: 7
   m_Name: Enemy_1
   m_TagString: Untagged
@@ -526,8 +527,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedMult: 7
-  _VISIBILITYTHRESHOLD: 10
+  _VISIBILITYTHRESHOLD: 20
   _PROXIMITYTHRESHOLD: 3
+--- !u!95 &272541826
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272541822}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 562776b0fed3e3b46bdd7e340c7742cd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &320510463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6115738431828511731, guid: 9e675a18856d9ee46928318c8a809dc7,

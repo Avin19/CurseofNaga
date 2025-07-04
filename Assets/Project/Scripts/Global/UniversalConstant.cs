@@ -30,13 +30,15 @@ namespace CurseOfNaga.Global
         {
             IDLE = 0,
             MOVING = 1 << 1,
-            PLAYER_VISIBLE = 1 << 2,
-            CHASING_PLAYER = 1 << 3,
-            REACHED_PLAYER = 1 << 4,
-            ATTACKING_PLAYER = 1 << 5,
-            ENEMY_WITHIN_PLAYER_RANGE = 1 << 6,
-            PLAYER_ATTACKING = 1 << 8,
-            DEAD = 1 << 9,
+            DODGING = 1 << 2,
+            ATTACKING = 1 << 3,
+            PLAYER_VISIBLE = 1 << 4,
+            CHASING_PLAYER = 1 << 5,
+            REACHED_PLAYER = 1 << 6,
+            ATTACKING_PLAYER = 1 << 7,
+            ENEMY_WITHIN_PLAYER_RANGE = 1 << 8,
+            PLAYER_ATTACKING = 1 << 9,
+            DEAD = 1 << 10,
         }
     }
 }
