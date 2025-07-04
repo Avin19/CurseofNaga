@@ -94,6 +94,18 @@
     [=] EnemyBaseController
         {+} Damage logic
 
+--------------------------------------------------------------------------------------------------------
+                                                04 JULY, 2025
+--------------------------------------------------------------------------------------------------------
+- Scripts
+    [=] Player
+        {+} Adding struct HitInfo and enum HitStatus
+        {+} Keeping a list of HitInfo to check which collider was hit
+        {+} OnTriggerEnter and OnTriggerExit for checking contacts with the collider
+    [=] MainGameplayManager
+        {+} Adding action for EnemyHit
+    [=] EnemyBaseController
+        {+} OnEnemyHit callback logic
 
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives

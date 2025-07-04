@@ -24,10 +24,17 @@ namespace CurseOfNaga.Gameplay.Enemies
         public int _VISIBILITYTHRESHOLD = 10;              //Set to const?
         public float _PROXIMITYTHRESHOLD = 10;              //Set to const?
 
+        private void OnDestroy()
+        {
+            MainGameplayManager.Instance.OnEnemyHit -= HandleEnemyHit;
+        }
+
         void Start()
         {
             _enemyStatus = EnemyStatus.IDLE;
             _Health = _OgHealth;
+
+            MainGameplayManager.Instance.OnEnemyHit += HandleEnemyHit;
         }
 
         private void Update()
@@ -64,6 +71,12 @@ namespace CurseOfNaga.Gameplay.Enemies
             }
 
             transform.position -= playerDir.normalized * _speedMult * Time.deltaTime;
+        }
+
+        private void HandleEnemyHit(int transformID, float damage)
+        {
+            if (transformID == transform.GetInstanceID())
+                GetDamage(damage);
         }
 
         public void GetDamage(float damage)

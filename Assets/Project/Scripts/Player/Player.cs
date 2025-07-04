@@ -1,16 +1,25 @@
 #define TESTING
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using CurseOfNaga.Gameplay.Enemies;
+
 using UnityEngine;
 
+using CurseOfNaga.Gameplay.Enemies;
 using static CurseOfNaga.Global.UniversalConstant;
 
 namespace CurseOfNaga.Gameplay
 {
     public class Player : MonoBehaviour
     {
+        internal enum HitStatus { DID_NOT_HIT, HIT }
+
+        internal struct HitInfo
+        {
+            public int ID;
+            public HitStatus Status;
+        }
 
         [SerializeField] private GameInput gameInput;
         [SerializeField] private float _movSpeed = 7f;
@@ -21,9 +30,11 @@ namespace CurseOfNaga.Gameplay
         [SerializeField] private Transform _weaponPlacement;
         [SerializeField] private Transform _playerMain;
         [SerializeField] private BoxCollider _playerCollider;
+
         private Animator _playerAC;
         // private Rigidbody _playerRb;
         private Vector3 inputVector;
+        private List<HitInfo> _hitInfos;
 
         private readonly Vector3 _LEFTFACING = new Vector3(-40f, 180f, 0f);
         private readonly Vector3 _RIGHTFACING = new Vector3(40f, 0f, 0f);
@@ -52,6 +63,7 @@ namespace CurseOfNaga.Gameplay
 #endif
             // _playerRb = GetComponent<Rigidbody>();
             _playerAC = GetComponent<Animator>();
+            _hitInfos = new List<HitInfo>();
 
             MainGameplayManager.Instance.OnObjectiveVisible += UpdatePlayerStatus;
             gameInput.OnInputDone += HandleInput;
@@ -67,14 +79,56 @@ namespace CurseOfNaga.Gameplay
             }
         }
 
-        private void OnTriggerStay(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"Detected Collider: {other.name}");
+            // Debug.Log($"Detected Collider: {other.name} | layer: {other.gameObject.layer}");
 
-            if ((other.gameObject.layer & (1 << _ENEMY_LAYER)) != 0         //other.gameobject can be a bit consuming
-                && ((_playerStatus & PlayerStatus.ATTACKING) != 0))
+            if (other.gameObject.layer == _ENEMY_LAYER)                   //other.gameobject can be a bit consuming
             {
-                other.GetComponent<EnemyBaseController>().GetDamage(10);
+                int colliderID = other.transform.parent.GetInstanceID();
+                HitInfo info;
+
+                //Check if the list contains the enemy
+                if (_hitInfos.Count == 0)
+                {
+                    info = new HitInfo();
+                    info.ID = colliderID;
+                    info.Status = HitStatus.DID_NOT_HIT;
+                    _hitInfos.Add(info);
+                }
+                else
+                {
+                    for (int i = 0; i < _hitInfos.Count; i++)
+                    {
+                        if (_hitInfos[i].ID == colliderID)
+                            continue;
+                        else
+                        // && _hitInfos[i].Status == HitStatus.DID_NOT_HIT
+                        // && (_playerStatus & PlayerStatus.ATTACKING) != 0                 //Dont check this here
+                        {
+                            info = new HitInfo();
+                            info.ID = colliderID;
+                            info.Status = HitStatus.DID_NOT_HIT;
+                            _hitInfos.Add(info);
+
+                            // other.transform.parent.GetComponent<EnemyBaseController>().GetDamage(10);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.layer == _ENEMY_LAYER)                   //other.gameobject can be a bit consuming
+            {
+                int colliderID = other.transform.parent.GetInstanceID();
+
+                for (int i = 0; i < _hitInfos.Count; i++)
+                {
+                    if (_hitInfos[i].ID == colliderID)
+                        _hitInfos.RemoveAt(i);
+                }
             }
         }
 
@@ -143,6 +197,23 @@ namespace CurseOfNaga.Gameplay
                         PlayAnimation(PlayerStatus.ATTACKING);
                         UnsetAction_Async(PlayerStatus.ATTACKING);
                     }
+
+                    // Check for Enemy-Hit
+
+                    HitInfo info;
+                    for (int i = 0; i < _hitInfos.Count; i++)
+                    {
+                        if (_hitInfos[i].Status == HitStatus.DID_NOT_HIT)
+                        {
+                            info = _hitInfos[i];
+                            info.Status = HitStatus.HIT;
+                            _hitInfos[i] = info;
+
+                            MainGameplayManager.Instance.OnEnemyHit?.Invoke(_hitInfos[i].ID, 10f);
+                        }
+                    }
+
+
                     // else
                     // {
                     //     _playerStatus &= ~PlayerStatus.ATTACKING;
