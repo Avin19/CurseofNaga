@@ -118,6 +118,14 @@
     [=] Player
         {+} Callback logic for OnEnemyStatusUpdate
             <~> Removing transform ID for dead enemy
+
+- Scripts
+    [=] EnemyBaseController
+        {+} Refactoring to store hit logic here
+    [=] Player
+        {+} Sending simple hit action invoke along with transform ID
+    [=] UniversalConstant
+        {+} Adding value to EnemyStatus
 --------------------------------------------------------------------------------------------------------
 - [NOW] Basic combat, exploration, vision-triggered objectives
 - [DO] Check how many actions can be stacked.

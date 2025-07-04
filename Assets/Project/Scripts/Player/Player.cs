@@ -55,7 +55,7 @@ namespace CurseOfNaga.Gameplay
         {
             MainGameplayManager.Instance.OnObjectiveVisible -= UpdatePlayerStatus;
             gameInput.OnInputDone -= HandleInput;
-            MainGameplayManager.Instance.OnEnemyStatusUpdate -= UpdateEnemyInfo;
+            // MainGameplayManager.Instance.OnEnemyStatusUpdate -= UpdateEnemyInfo;
         }
 
         private void Start()
@@ -69,7 +69,7 @@ namespace CurseOfNaga.Gameplay
 
             MainGameplayManager.Instance.OnObjectiveVisible += UpdatePlayerStatus;
             gameInput.OnInputDone += HandleInput;
-            MainGameplayManager.Instance.OnEnemyStatusUpdate += UpdateEnemyInfo;
+            // MainGameplayManager.Instance.OnEnemyStatusUpdate += UpdateEnemyInfo;
         }
 
         private void Update()
@@ -89,7 +89,9 @@ namespace CurseOfNaga.Gameplay
             if (other.gameObject.layer == _ENEMY_LAYER)                   //other.gameobject can be a bit consuming
             {
                 int colliderID = other.transform.parent.GetInstanceID();
-                HitInfo info;
+                MainGameplayManager.Instance.OnEnemyStatusUpdate?.Invoke(EnemyStatus.ENEMY_WITHIN_PLAYER_RANGE, colliderID, 1);
+
+                /*HitInfo info;
 
                 //Check if the list contains the enemy
                 if (_hitInfos.Count == 0)
@@ -117,21 +119,23 @@ namespace CurseOfNaga.Gameplay
                             // other.transform.parent.GetComponent<EnemyBaseController>().GetDamage(10);
                         }
                     }
-                }
+                }*/
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
+
             if (other.gameObject.layer == _ENEMY_LAYER)                   //other.gameobject can be a bit consuming
             {
                 int colliderID = other.transform.parent.GetInstanceID();
+                MainGameplayManager.Instance.OnEnemyStatusUpdate?.Invoke(EnemyStatus.ENEMY_WITHIN_PLAYER_RANGE, colliderID, 0);
 
-                for (int i = 0; i < _hitInfos.Count; i++)
+                /*for (int i = 0; i < _hitInfos.Count; i++)
                 {
                     if (_hitInfos[i].ID == colliderID)
                         _hitInfos.RemoveAt(i);
-                }
+                }*/
             }
         }
 
@@ -235,10 +239,12 @@ namespace CurseOfNaga.Gameplay
                         _playerStatus |= PlayerStatus.PERFORMING_ADDITIVE_ACTION;
                         PlayAnimation(PlayerStatus.ATTACKING);
                         UnsetAction_Async(PlayerStatus.ATTACKING);
+
+                        // Check for Enemy-Hit
+                        MainGameplayManager.Instance.OnEnemyStatusUpdate?.Invoke(EnemyStatus.PLAYER_ATTACKING, -1, 10f);
                     }
 
-                    // Check for Enemy-Hit
-                    HitInfo info;
+                    /*HitInfo info;
                     for (int i = 0; i < _hitInfos.Count; i++)
                     {
                         if (_hitInfos[i].Status == HitStatus.DID_NOT_HIT)
@@ -249,7 +255,8 @@ namespace CurseOfNaga.Gameplay
 
                             MainGameplayManager.Instance.OnEnemyStatusUpdate?.Invoke(EnemyStatus.BEING_ATTACKED, _hitInfos[i].ID, 10f);
                         }
-                    }
+                    }*/
+
                     // else
                     // {
                     //     _playerStatus &= ~PlayerStatus.ATTACKING;
@@ -276,7 +283,7 @@ namespace CurseOfNaga.Gameplay
             }
         }
 
-        private void UpdateEnemyInfo(EnemyStatus status, int transformID, float value)
+        /*private void UpdateEnemyInfo(EnemyStatus status, int transformID, float value)
         {
             switch (status)
             {
@@ -290,7 +297,7 @@ namespace CurseOfNaga.Gameplay
                     }
                     break;
             }
-        }
+        }*/
 
         private void HandleAction()
         {

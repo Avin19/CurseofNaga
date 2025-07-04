@@ -14,17 +14,20 @@ namespace CurseOfNaga.Gameplay.Enemies
         public int _VISIBILITYTHRESHOLD = 10;              //Set to const?
         public float _PROXIMITYTHRESHOLD = 10;              //Set to const?
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             MainGameplayManager.Instance.OnEnemyStatusUpdate -= HandleStatusChange;
+        }
+
+        private void OnEnable()
+        {
+            MainGameplayManager.Instance.OnEnemyStatusUpdate += HandleStatusChange;
         }
 
         void Start()
         {
             _enemyStatus = EnemyStatus.IDLE;
             _Health = _OgHealth;
-
-            MainGameplayManager.Instance.OnEnemyStatusUpdate += HandleStatusChange;
         }
 
         private void Update()
@@ -63,26 +66,37 @@ namespace CurseOfNaga.Gameplay.Enemies
             transform.position -= playerDir.normalized * _speedMult * Time.deltaTime;
         }
 
-        private void HandleStatusChange(EnemyStatus status, int transformID, float damage)
+        private void HandleStatusChange(EnemyStatus status, int transformID, float value)
         {
             switch (status)
             {
-                case EnemyStatus.BEING_ATTACKED:
-                    if (transformID == transform.GetInstanceID())
-                        GetDamage(damage);
+                case EnemyStatus.ENEMY_WITHIN_PLAYER_RANGE:
+                    if (value == 1)
+                        _enemyStatus |= EnemyStatus.ENEMY_WITHIN_PLAYER_RANGE;
+                    else
+                        _enemyStatus &= ~EnemyStatus.ENEMY_WITHIN_PLAYER_RANGE;
+
+                    break;
+
+                case EnemyStatus.PLAYER_ATTACKING:
+                    if ((_enemyStatus & EnemyStatus.ENEMY_WITHIN_PLAYER_RANGE) != 0)
+                        GetDamage(value);
                     break;
             }
         }
 
         public void GetDamage(float damage)
         {
-            _Health -= damage;
+            // Debug.Log($"Received Damage: {damage}");
 
             if (_Health <= 0)
             {
+                _enemyStatus &= ~EnemyStatus.ENEMY_WITHIN_PLAYER_RANGE;
                 MainGameplayManager.Instance.OnEnemyStatusUpdate?.Invoke(EnemyStatus.DEAD, transform.GetInstanceID(), -1);
                 gameObject.SetActive(false);
             }
+
+            _Health -= damage;
         }
     }
 }
